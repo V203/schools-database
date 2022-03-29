@@ -1,0 +1,29 @@
+{
+  "name": "schools-database",
+  "version": "1.0.0",
+  "description": "## The domain",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha",
+    "start": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "mocha": "^9.1.3"
+  },
+  "dependencies": {
+    "express": "^4.17.3",
+    "express-handlebars": "^6.0.3",
+    "pg": "^8.7.1"
+  },
+
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/V203/schools-database.git"
+  },
+  "bugs": {
+    "url": "https://github.com/V203/schools-database/issues"
+  },
+  "homepage": "https://github.com/V203/schools-database#readme"
+}

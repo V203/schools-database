@@ -1,0 +1,27 @@
+body {
+	background-color:#77D6AE;
+	color: whitesmoke;
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.container{
+	text-align: center;
+	margin: auto;
+	width: 80%;
+}
+
+.spacer{
+	height: 25px;
+}
+
+table{
+	border-collapse: collapse;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+td, th {
+	border: 1px solid #999;
+	padding: 0.5rem;
+	text-align: left;
+	}
