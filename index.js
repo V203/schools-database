@@ -53,14 +53,17 @@ app.get("/teachers", async (req, res) => {
 
 app.post("/add_teacher",async (req,res)=>{
     console.log(req.body);
-    const fname = req.body.fname
-    const lname = req.body.lname
-    const email = req.body.email
-    await pool.query(`select add_teacher('${fname}','${lname}','${email}')`)
+    // const fname = req.body.fname
+    // const lname = req.body.lname
+    // const email = req.body.email
+    await pool.query(`select add_teacher('${req.body.fname}','${req.body.lname}','${req.body.email}')`)
     res.redirect('/');
 });
 
-
+app.get("/teachersmultiplesubjects", async (req,res)=>{
+    const multi_subs = (await pool.query("select find_teachers_teaching_multiple_subjects()")).rows
+    res.render("teachersmultiplesubjects", {multi_subs})
+})
 
 app.listen(PORT, function () {
     console.log(`App started on port ${PORT}`)
