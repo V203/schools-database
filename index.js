@@ -32,9 +32,9 @@ const pool = new Pool({
 
 
 app.get('/', async (req, res) => {
-    let all_teachers = (await pool.query("select * from all_teachers()")).rows;
-
-    res.render('index', { all_teachers });
+    let all_teachers = (await pool.query("select * from get_teachers()")).rows;
+    const the_sub = (await pool.query("select * from find_subjects()")).rows;
+    res.render('index', { all_teachers ,the_sub});
 });
 
 
@@ -53,7 +53,7 @@ app.get("/teachers", async (req, res) => {
 });
 
 app.post("/add_teacher", async (req, res) => {
-    console.log(req.body);
+    // console.log(req.body);
 
     await pool.query(`select add_teacher('${req.body.fname}','${req.body.lname}','${req.body.email}')`)
     res.redirect('/');
@@ -74,10 +74,20 @@ app.get("/link_teacher", async (req, res) => {
 
 app.post("/link_teacher", async (req, res) => {
     console.log(req.body);
-    const subs = (await pool.query("select * from find_subjects()")).rows
-    const teachers = (await pool.query("select id, first_name, last_name from get_teachers()")).rows
-    await pool.query(`select link_teacher_to_subject(${req.body.select_teacher},${req.body.select_subject})`)
-    res.render('link_teacher', { subs, teachers });
+    console.log(typeof req.body.select_teacher);
+    console.log(typeof req.body.select_subject);
+    var select_subject = req.body.select_subject
+    select_subject 
+    select_subject = parseInt(select_subject)
+    console.log(typeof select_subject);
+    var select_teacher = req.body.select_teacher
+    select_teacher 
+    select_teacher = parseInt(select_teacher)
+    console.log(typeof select_teacher);
+    // const subs = (await pool.query("select * from find_subjects()")).rows
+    // const teachers = (await pool.query("select id, first_name, last_name from get_teachers()")).rows
+    await pool.query(`select link_teacher_to_subject(${select_teacher},${select_subject})`)
+    res.redirect('/link_teacher');
 });
 
 app.get("/add_subject", async (req, res) => res.render("add_subject"));
@@ -91,9 +101,15 @@ app.post("/add_subject", async (req, res) => {
 app.get("/subject_taught/:name", async (req,res) => {
     
     const teach_for_sub = (await pool.query(`select * from find_teachers_for_subject('${req.params.name}')`)).rows;
-    console.log(teach_for_sub);
+    
     res.render("subject_taught",{teach_for_sub});
 });
+
+app.get("/teacher_taught/:id", async (req,res)=>{
+    const sub_by_teach = (await pool.query(`select * from sub_by_teach(${req.params.id})`)).rows;
+    res.render("teacher_taught",{sub_by_teach});
+
+} );
 
 app.listen(PORT, function () {
     console.log(`App started on port ${PORT}`)

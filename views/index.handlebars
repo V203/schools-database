@@ -11,12 +11,45 @@
 
 <body>
 
-    <table>
-        <tr><th>Teachers with there subjects</th></tr>
-        {{#each all_teachers}}
-        <tr><td>{{this.all_teachers}}</td></tr>
-        {{/each}}
-    </table>
+    <div class="container">
+        <div class="row">
+            <div class="col-6">
+
+                <table>
+                    <tr>
+                        <th>Teacher Name and Last Name</th>
+                    </tr>
+                    {{#each all_teachers}}
+                    <tr>
+                        <td> <a href="/teacher_taught/{{id}}"> {{first_name}} {{last_name}}</a> </td>
+                    </tr>
+                    {{/each}}
+                </table>
+
+            </div>
+
+
+            <div class="col-6">
+
+                <table>
+                    <tr>
+                        <th>Available Subjects</th>
+
+                    </tr>
+                    {{#each the_sub}}
+                    <tr>
+
+                        <td><a href="/subject_taught/{{name}}/">{{name}}</a></td>
+                    </tr>
+                    {{/each}}
+
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+
 </body>
 
 </html>
