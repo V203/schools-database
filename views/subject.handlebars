@@ -1,13 +1,13 @@
 <body>
     <table>
         <tr>
-            <th>sub #id & Sub Name</th>
+            <th>Available Subjects</th>
             
         </tr>
             {{#each the_sub}}
         <tr>
-            <td>{{this.find_subjects}}</td>
-      
+            
+      <td><a href="/subject_taught/{{name}}/">{{name}}</a></td>
         </tr>
             {{/each}}
 

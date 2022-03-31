@@ -1,11 +1,16 @@
+<div class="spacer"></div>
+<h1 class="h1">All Our Teachers</h1>
+<div class="spacer"></div>
 <table>
     <tr>
-        <th>teachers Names</th>
+        <th> Name</th>
+        <th> Last Name</th>
     </tr>
     {{#each teachers}}
     <tr>
 
-        <td>{{this.first_name}}</td>
+        <td>{{first_name}}</td>
+        <td>{{last_name}}</td>
     </tr>
     {{/each}}
 </table>

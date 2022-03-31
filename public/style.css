@@ -1,5 +1,5 @@
 body {
-	background-color:#77D6AE;
+	background-color:#235479;
 	color: whitesmoke;
 	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
@@ -25,3 +25,9 @@ td, th {
 	padding: 0.5rem;
 	text-align: left;
 	}
+
+
+.nav-item{
+	margin-left: auto;
+	margin-right: auto;
+}

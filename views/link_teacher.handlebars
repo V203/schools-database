@@ -1,0 +1,24 @@
+<form action="/link_teacher" method="post">
+
+
+
+    <select name="select_subject" id="">
+        <option value="">
+            <p>--Select Subject--</p>
+        </option>
+        {{#each subs}}
+        <option value="{{id}}">{{name}}</option>
+        {{/each}}
+    </select>
+
+    <select name="select_teacher" id="">
+        <option value="">
+            <p>--Select teacher--</p>
+        </option>
+        {{#each teachers}}
+        <option value="{{id}}">{{first_name}} {{last_name}} </option>
+        {{/each}}
+    </select>
+
+    <input type="submit" value="Assign">
+</form>
