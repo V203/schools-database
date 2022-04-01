@@ -1,13 +1,45 @@
 <body>
+    <div class="spacer"></div>
+    <p class="h4"> Add A New Teacher to Our Database</p>
+    <div class="spacer"></div>
     <form action="/add_teacher" method="post">
-    <span>
 
-         <h6>Fisrt Name:</h6><input placeholder="First Name" type="text" name="fname" id=""> 
-    </span>
-    <span> <h6> Last Name:</h6><input placeholder="Last Name" type="text" name="lname" id=""> </span> 
+<div class="container">
+    <div class="row">
+        <div class="col-3"></div>
+        <div class="col-6">
+            <div class="input-group ">
+            <span class="input-group-text" id="addon-wrapping">First Name:</span>
+            <input name="fname" type="text" class="form-control" placeholder="First Name" aria-label="First Name"
+                aria-describedby="addon-wrapping">
+        </div>
 
-    <span> <h6>Email:</h6> <input type="text" placeholder="email" name="email" id="">  </span>
+        <div class="input-group">
+            <span class="input-group-text" id="addon-wrapping">Last Name:</span>
+            <input name="lname" name="lname" type="text" class="form-control" placeholder="Last Name"
+                aria-label="last Name" aria-describedby="addon-wrapping">
+        </div>
+        <div class="input-group">
+            <span class="input-group-text" id="addon-wrapping">Email:</span>
+            <input  name="email" type="text" class="form-control" placeholder="Email" aria-label="email"
+                aria-describedby="addon-wrapping">
 
-    <input type="submit" value="submit">
+            <input class="btn btn-primary" type="submit" value="submit">
+        </div>
+
+
+
+
+        </div>
+        <div class="col-3"></div>
+    </div>
+</div>
+
+
+        
     </form>
+
+
+
+
 </body>

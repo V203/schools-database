@@ -1,10 +1,23 @@
+<div class="spacer"></div>
+
+<p class="h4">The teachers with multiple subjects</p>
+<div class="spacer"></div>
 <table>
     <tr>
-        <th>teachers with subject count</th>
+        <th>First Name & Last Name </th>
+    <th>
+        Subject Count
+    </th>
     </tr>
+
+  
     {{#each multi_subs}}
     <tr>
-        <td>{{find_teachers_teaching_multiple_subjects}}</td>
+        <td> {{first_name}} {{last_name}}</td>
+
+        <td>{{subject_count}}</td>
+
     </tr>
+
     {{/each}}
 </table>

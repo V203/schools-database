@@ -1,7 +1,11 @@
-<form action="/teacher_taught/{{name}}" method="get">
+<div class="spacer"></div>
 
+<p class="h4">Subjects taught by <b>{{fname}} {{lname}}</b></p>
+<div class="spacer"></div>
+<form action="/teacher_taught/{{name}}" method="get">
+<ul>
     {{#each sub_by_teach}}
     <li> {{name}} </li>
     {{/each}}
-
+</ul>
 </form>

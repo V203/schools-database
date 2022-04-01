@@ -60,7 +60,8 @@ app.post("/add_teacher", async (req, res) => {
 });
 
 app.get("/teachersmultiplesubjects", async (req, res) => {
-    const multi_subs = (await pool.query("select find_teachers_teaching_multiple_subjects()")).rows
+    const multi_subs = (await pool.query("select * from find_teachers_teaching_multiple_subjects()")).rows;
+    
     res.render("teachersmultiplesubjects", { multi_subs })
 })
 
@@ -99,15 +100,19 @@ app.post("/add_subject", async (req, res) => {
 });
 
 app.get("/subject_taught/:name", async (req,res) => {
-    
+    let subject = req.params.name
     const teach_for_sub = (await pool.query(`select * from find_teachers_for_subject('${req.params.name}')`)).rows;
     
-    res.render("subject_taught",{teach_for_sub});
+    res.render("subject_taught",{teach_for_sub,subject});
 });
 
 app.get("/teacher_taught/:id", async (req,res)=>{
+    
     const sub_by_teach = (await pool.query(`select * from sub_by_teach(${req.params.id})`)).rows;
-    res.render("teacher_taught",{sub_by_teach});
+    const fname = sub_by_teach[0]['first_name']
+    const lname = sub_by_teach[0]['last_name']
+    console.log(fname);
+    res.render("teacher_taught",{sub_by_teach, fname,lname});
 
 } );
 
