@@ -11,8 +11,8 @@
 
                 <div class="col-4"></div>
                 <div class="col-4">
-                    <select class="form-select" aria-label="Default select example" name="select_subject" id="">
-                        <option selected>
+                    <select class="form-select" aria-label="Default select example" name="select_subject" id="" required>
+                        <option selected value="">
                             <p>--Select Subject--</p>
                         </option>
                         {{#each subs}}
@@ -20,8 +20,8 @@
                         {{/each}}
                     </select>
 
-                    <select class="form-select" aria-label="Default select example" name="select_teacher" id="">
-                        <option selected>
+                    <select class="form-select" aria-label="Default select example" name="select_teacher" id="" required>
+                        <option value="">
                             <p>--Select teacher--</p>
                         </option>
                         {{#each teachers}}

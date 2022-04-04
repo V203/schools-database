@@ -26,7 +26,7 @@ begin
 		where email = the_email;
 
 	-- if total is 0 the subject doesn't exist
-	if (emailCount = 0) then
+	if (emailCount = 0 AND the_name != ' ' AND the_surname != ' ' AND the_email != ' ' ) then
 	
 		-- then create the teacher
 		insert into teacher (first_name, last_name, email) 

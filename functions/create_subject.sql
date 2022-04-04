@@ -13,7 +13,7 @@ begin
 		where LOWER(name) = LOWER(the_name);
 
 	-- if total is 0 the subject doesn't exist
-	if (total = 0) then
+	if (total = 0 AND the_name != ' ') then
 		-- then create the subject
 		insert into subject (name) values (the_name);
 		-- and returns true if the subject was created already

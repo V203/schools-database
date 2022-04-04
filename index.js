@@ -75,19 +75,10 @@ app.get("/link_teacher", async (req, res) => {
 
 app.post("/link_teacher", async (req, res) => {
     console.log(req.body);
-    console.log(typeof req.body.select_teacher);
-    console.log(typeof req.body.select_subject);
-    var select_subject = req.body.select_subject
-    select_subject 
-    select_subject = parseInt(select_subject)
-    console.log(typeof select_subject);
-    var select_teacher = req.body.select_teacher
-    select_teacher 
-    select_teacher = parseInt(select_teacher)
-    console.log(typeof select_teacher);
-    // const subs = (await pool.query("select * from find_subjects()")).rows
-    // const teachers = (await pool.query("select id, first_name, last_name from get_teachers()")).rows
-    await pool.query(`select link_teacher_to_subject(${select_teacher},${select_subject})`)
+    console.log( req.body.select_teacher);
+    console.log( req.body.select_subject);
+ 
+    await pool.query(`select * from link_teacher_to_subject('${req.body.select_teacher}','${req.body.select_subject}')`)
     res.redirect('/link_teacher');
 });
 
@@ -107,12 +98,23 @@ app.get("/subject_taught/:name", async (req,res) => {
 });
 
 app.get("/teacher_taught/:id", async (req,res)=>{
-    
-    const sub_by_teach = (await pool.query(`select * from sub_by_teach(${req.params.id})`)).rows;
-    const fname = sub_by_teach[0]['first_name']
-    const lname = sub_by_teach[0]['last_name']
-    console.log(fname);
-    res.render("teacher_taught",{sub_by_teach, fname,lname});
+    try {
+        
+        
+        let sub_by_teach = (await pool.query(`select * from sub_by_teach(${req.params.id})`)).rows;
+        console.log(sub_by_teach);
+        if(sub_by_teach === []){
+            document.write("booo")
+            // res.render("/");
+        }else if (sub_by_teach){
+            let fname = sub_by_teach[0]['first_name']
+            let lname = sub_by_teach[0]['last_name']
+           
+            res.render("teacher_taught",{sub_by_teach, fname,lname});
+        }
+    } catch (error) {
+        console.log(` sub by teach error ==> ${error}`)
+    }
 
 } );
 
