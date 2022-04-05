@@ -5,18 +5,26 @@
 <table>
     <tr>
         <th>First Name & Last Name </th>
-    <th>
-        Subject Count
-    </th>
+        <th>
+            Subject Count
+        </th>
+        <th>Subjetcs for teacher</th>
     </tr>
 
-  
+
     {{#each multi_subs}}
     <tr>
         <td> {{first_name}} {{last_name}}</td>
 
         <td>{{subject_count}}</td>
+        {{!-- {{#each multi_subs}} --}}
+        <td>
+            {{#each subs_by_name}}
+            {{name}}
+            {{/each}}
+        </td>
 
+        {{!-- {{/each}} --}}
     </tr>
 
     {{/each}}

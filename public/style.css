@@ -36,3 +36,17 @@ p{
 	text-align: center;
 }
 
+.message{
+	background-color: rgba(218, 38, 25, 0.665);
+	border-style: solid;
+	border-color: rgb(248, 0, 0);
+	color:rgb(0, 0, 0);
+	border-radius: 7px;
+	width: 200px;
+	height: 30px;
+
+	
+	                         
+
+
+}
