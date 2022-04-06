@@ -1,5 +1,5 @@
 body {
-	background-color:#235479;
+	background-color:#5a1c66;
 	color: whitesmoke;
 	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
@@ -35,6 +35,14 @@ td, th {
 p{
 	text-align: center;
 }
+
+
+/* 
+li{
+
+	text-align: left;
+}  */
+
 
 .message{
 	background-color: rgba(218, 38, 25, 0.665);

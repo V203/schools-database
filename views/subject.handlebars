@@ -1,15 +1,27 @@
 <body>
+
+    <span>
+
+        <form action="/add_subject" method="post">
+            <input type="text" name="sub_name" placeholder="Register Subject" id="" required>
+            <input type="submit" value="submit">
+        </form>
+
+
+
+    </span>
+    
     <table>
         <tr>
             <th>Available Subjects</th>
-            
+
         </tr>
-            {{#each the_sub}}
+        {{#each the_sub}}
         <tr>
-            
-      <td><a href="/subject_taught/{{name}}/">{{name}}</a></td>
+
+            <td><a href="/subject_taught/{{name}}/">{{name}}</a></td>
         </tr>
-            {{/each}}
+        {{/each}}
 
     </table>
 </body>

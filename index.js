@@ -39,11 +39,11 @@ const pool = new Pool({
     }
 });
 
-app.get('/', async (req, res) => {
-    let all_teachers = (await pool.query("select * from get_teachers()")).rows;
-    const the_sub = (await pool.query("select * from find_subjects()")).rows;
-    res.render('index', { all_teachers, the_sub });
-});
+// app.get('/', async (req, res) => {
+//     let all_teachers = (await pool.query("select * from get_teachers()")).rows;
+//     const the_sub = (await pool.query("select * from find_subjects()")).rows;
+//     res.render('index', { all_teachers, the_sub });
+// });
 
 app.get("/add_teacher", async (req, res) => res.render("add_teacher"));
 
@@ -62,15 +62,16 @@ app.post("/add_teacher", async (req, res) => {
     res.redirect('/');
 });
 
-app.get("/teachersmultiplesubjects", async (req, res) => {
+app.get("/", async (req, res) => {
     const multi_subs = (await pool.query("select * from find_teachers_teaching_multiple_subjects()")).rows;
     let temp = multi_subs.map(el => el.id)
 
     for (let i = 0; i < multi_subs.length; i++) {
         multi_subs[i]['subs_by_name'] = (await pool.query(`select * from sub_by_teach(${temp[i]})`)).rows;
     }
+    console.log(multi_subs);
 
-    res.render("teachersmultiplesubjects", { multi_subs })
+    res.render("index", { multi_subs })
 })
 
 app.get("/link_teacher", async (req, res) => {
@@ -97,7 +98,7 @@ app.post("/add_subject", async (req, res) => {
 
     await pool.query(`select create_subject('${req.body.sub_name}')`)
 
-    res.redirect('/add_subject')
+    res.redirect('/subject')
 
 });
 

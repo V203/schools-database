@@ -4,8 +4,23 @@
 <div class="spacer"></div>
 <form action="/teacher_taught/{{name}}" method="get">
 
-    {{#each sub_by_teach}}
-    <li> {{name}} </li>
-    {{/each}}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-4"></div>
+            <div class="col-4">
+                <div class="center">
+                    {{#each sub_by_teach}}
+                    <a href="/teacher_taught/{{id}}">
+                        <li> {{name}} </li>
+                    </a>
+                    {{/each}}
+
+                </div>
+            </div>
+            <div class="col-4"></div>
+        </div>
+    </div>
+
 
 </form>

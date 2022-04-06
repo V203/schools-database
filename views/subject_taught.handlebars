@@ -1,12 +1,26 @@
 <div class="spacer"></div>
-<p class="h4">here are the Teachers that teach <b>{{subject}}</b>.</p>
+<p class="h4">Teachers that teach <b>{{subject}}</b>.</p>
 <div class="spacer"></div>
 
 <form action="/subject_taught/{{name}}/" method="get">
 
-    {{#each teach_for_sub}}
-    <li>{{first_name}} {{last_name}}</li>
-    {{/each}}
+    <div class="container">
+        <div class="row">
+            <div class="col-4"></div>
+            <div class="col-4">
+
+                <ul class="list-group">
+                    {{#each teach_for_sub}}
+
+                    <li class="list-group-item-secondary list-group-item-action">{{first_name}} {{last_name}}</li>
+                    {{/each}}
+                </ul>
+
+
+            </div>
+            <div class="col-4"></div>
+        </div>
+    </div>
+
 
 </form>
-
