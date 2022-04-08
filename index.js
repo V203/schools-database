@@ -46,8 +46,7 @@ app.get('/subject', async (req, res) => {
 });
 
 app.get("/teacher", async (req, res) => {
-    let teachers = (await pool.query("Select * from get_teachers()")).rows;
-    console.log(teachers);
+    let teachers = (await pool.query("Select * from get_teachers()")).rows;    
     res.render('teacher', { teachers });
 });
 
@@ -96,15 +95,13 @@ app.get("/subject_taught/:name", async (req, res) => {
     res.render("subject_taught", { teach_for_sub, subject });
 });
 
-app.get("/teacher_taught/:id", async (req, res) => {
-    console.log(req.params.id);
+app.get("/teacher_taught/:id", async (req, res) => {    
     let fname;
     let lname;
     let sub_by_teach = (await pool.query(`select * from sub_by_teach(${req.params.id})`)).rows;
 
     if (sub_by_teach.length === 0) {
-        let the_teach = (await pool.query(`select * from get_teacher_by_id(${req.params.id})`)).rows;
-        console.log(the_teach);
+        let the_teach = (await pool.query(`select * from get_teacher_by_id(${req.params.id})`)).rows;        
         let the_teach_l = the_teach[0]['last_name']
         let the_teach_n = the_teach[0]['first_name']
         res.render("teacher_no_sub", { the_teach_l, the_teach_n });
