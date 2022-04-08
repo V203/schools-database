@@ -5,4 +5,4 @@ create table teacher_subject (
 	foreign key (subject_id) references subject(id)
 
 );
-	CREATE UNIQUE INDEX index_name ON teacher_subject(teacher_id, subject_id)
+	 CREATE UNIQUE INDEX index_name ON teacher_subject(teacher_id, subject_id)

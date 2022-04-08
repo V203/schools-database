@@ -2,42 +2,78 @@
 
 <p class="h4">The teachers with multiple subjects</p>
 <div class="spacer"></div>
-<table class="table table-striped table-dark">
-    <tr>
-        <th scope="col">First Name & Last Name </th>
-        <th scope="col">
-            Subject Count
-        </th>
-        <th scope="col">Subjetcs for teacher</th>
-    </tr>
+<div class="row">
+
+    <div class="col-4">
+        <form action="/" method="post">
+            <select name="select_subject" id="" required>
+                <option selected value="">
+                    <p>--Select Subject--</p>
+                </option>
+                {{#each subs}}
+                <option value="{{id}}">{{name}}</option>
+                {{/each}}
+            </select>
+            <div class="spacer"></div>
+            <select name="select_teacher" id="" required>
+                <option value="">
+                    <p>--Select teacher--</p>
+                </option>
+                {{#each teachers}}
+                <option value="{{id}}">{{first_name}} {{last_name}} </option>
+                {{/each}}
+            </select>
+            <div class="spacer"></div>
+            <input type="submit" value="Assign">
+        </form>
+    </div>
 
 
-    {{#each multi_subs}}
-    <tr>
 
-        <td>
-            <a href="/teacher_taught/{{id}}">
-            {{first_name}} {{last_name}}
-            </a>
+    <div class="col-8">
+        <table class="table table-light">
+            <tr>
+                <th scope="col">First Name & Last Name </th>
+                <th scope="col">
+                    Subject Count
+                </th>
+                <th scope="col">Subjetcs for teacher</th>
+            </tr>
 
-        </td>
 
-        <td>{{subject_count}}</td>
+            {{#each multi_subs}}
+            <tr>
 
-        <td>
-            {{#each subs_by_name}}
+                <td>
+                    <a href="/teacher_taught/{{id}}">
+                        {{first_name}} {{last_name}}
+                    </a>
 
-            <ul class="list-group">
-                <a href="/subject_taught/{{name}}/">
-                    <li class="list-group-item-secondary list-group-item-action">{{name}}</li>
-                </a>
-            </ul>
+                </td>
+
+                <td>{{subject_count}}</td>
+
+                <td>
+                    {{#each subs_by_name}}
+
+                    <ul class="list-group">
+                        <a href="/subject_taught/{{name}}/">
+                            <li class="list-group-item">{{name}}</li>
+                        </a>
+                    </ul>
+
+                    {{/each}}
+                </td>
+
+
+            </tr>
 
             {{/each}}
-        </td>
+        </table>
+    </div>
+</div>
 
 
-    </tr>
 
-    {{/each}}
-</table>
+
+{{!-- <div class="spacer"></div> --}}

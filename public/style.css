@@ -5,7 +5,7 @@ body {
 }
 
 .container{
-	text-align: center;
+	/* text-align: center; */
 	margin: auto;
 	width: 80%;
 }
@@ -35,26 +35,13 @@ td, th {
 p{
 	text-align: center;
 }
-
-
-/* 
-li{
-
-	text-align: left;
-}  */
-
-
-.message{
-	background-color: rgba(218, 38, 25, 0.665);
-	border-style: solid;
-	border-color: rgb(248, 0, 0);
-	color:rgb(0, 0, 0);
-	border-radius: 7px;
-	width: 200px;
-	height: 30px;
-
+.whiten{
+	border-style: solid 5px;
+	border: #5a1c66;
+	background-color: rgb(255, 255, 255);
+	color: black;
 	
-	                         
-
-
+}
+.gap{
+	width: 33.3%;
 }

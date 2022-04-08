@@ -52,9 +52,10 @@ app.get('/subject', async (req, res) => {
     res.render("subject", { the_sub })
 });
 
-app.get("/teachers", async (req, res) => {
+app.get("/teacher", async (req, res) => {
     let teachers = (await pool.query("Select * from get_teachers()")).rows;
-    res.render('teachers', { teachers });
+    console.log(teachers);
+    res.render('teacher', { teachers });
 });
 
 app.post("/add_teacher", async (req, res) => {
@@ -69,18 +70,15 @@ app.get("/", async (req, res) => {
     for (let i = 0; i < multi_subs.length; i++) {
         multi_subs[i]['subs_by_name'] = (await pool.query(`select * from sub_by_teach(${temp[i]})`)).rows;
     }
-    console.log(multi_subs);
-
-    res.render("index", { multi_subs })
-})
-
-app.get("/link_teacher", async (req, res) => {
+    
     const subs = (await pool.query("select * from find_subjects()")).rows
     const teachers = (await pool.query("select id, first_name, last_name from get_teachers()")).rows
-    res.render("link_teacher", { subs, teachers });
-});
+    
 
-app.post("/link_teacher", async (req, res) => {
+    res.render("index", { multi_subs, subs, teachers })
+})
+
+app.post("/", async (req, res) => {
 
     try {
         await pool.query(`select * from link_teacher_to_subject('${req.body.select_teacher}','${req.body.select_subject}')`)
@@ -88,7 +86,14 @@ app.post("/link_teacher", async (req, res) => {
     } catch (error) {
         console.log(error.detail);
     }
-    res.redirect('/link_teacher');
+    console.log(req.body);
+    res.redirect('/');
+});
+
+app.get("/link_teacher", async (req, res) => {
+    const subs = (await pool.query("select * from find_subjects()")).rows
+    const teachers = (await pool.query("select id, first_name, last_name from get_teachers()")).rows
+    res.render("link_teacher", { subs, teachers });
 });
 
 app.get("/add_subject", async (req, res) => res.render("add_subject"));
