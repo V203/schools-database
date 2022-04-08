@@ -31,19 +31,12 @@ app.use(express.static('public'));
 
 app.engine('handlebars', exphbs.engine())
 app.set('view engine', 'handlebars');
-// app.set('views', './views');
 
 const pool = new Pool({
     connectionString, ssl: {
         rejectUnauthorized: false
     }
 });
-
-// app.get('/', async (req, res) => {
-//     let all_teachers = (await pool.query("select * from get_teachers()")).rows;
-//     const the_sub = (await pool.query("select * from find_subjects()")).rows;
-//     res.render('index', { all_teachers, the_sub });
-// });
 
 app.get("/add_teacher", async (req, res) => res.render("add_teacher"));
 
@@ -66,27 +59,21 @@ app.post("/add_teacher", async (req, res) => {
 app.get("/", async (req, res) => {
     const multi_subs = (await pool.query("select * from find_teachers_teaching_multiple_subjects()")).rows;
     let temp = multi_subs.map(el => el.id)
-
     for (let i = 0; i < multi_subs.length; i++) {
         multi_subs[i]['subs_by_name'] = (await pool.query(`select * from sub_by_teach(${temp[i]})`)).rows;
-    }
-    
+    }    
     const subs = (await pool.query("select * from find_subjects()")).rows
-    const teachers = (await pool.query("select id, first_name, last_name from get_teachers()")).rows
-    
-
+    const teachers = (await pool.query("select id, first_name, last_name from get_teachers()")).rows    
     res.render("index", { multi_subs, subs, teachers })
 })
 
 app.post("/", async (req, res) => {
-
     try {
         await pool.query(`select * from link_teacher_to_subject('${req.body.select_teacher}','${req.body.select_subject}')`)
 
     } catch (error) {
         console.log(error.detail);
     }
-    console.log(req.body);
     res.redirect('/');
 });
 
@@ -99,18 +86,13 @@ app.get("/link_teacher", async (req, res) => {
 app.get("/add_subject", async (req, res) => res.render("add_subject"));
 
 app.post("/add_subject", async (req, res) => {
-
-
     await pool.query(`select create_subject('${req.body.sub_name}')`)
-
     res.redirect('/subject')
-
 });
 
 app.get("/subject_taught/:name", async (req, res) => {
     let subject = req.params.name
     const teach_for_sub = (await pool.query(`select * from find_teachers_for_subject('${req.params.name}')`)).rows;
-
     res.render("subject_taught", { teach_for_sub, subject });
 });
 
@@ -129,12 +111,8 @@ app.get("/teacher_taught/:id", async (req, res) => {
     } else {
 
         try {
-
-
-
             fname = sub_by_teach[0]['first_name']
             lname = sub_by_teach[0]['last_name']
-
         } catch (error) {
             console.log(error);
         }
