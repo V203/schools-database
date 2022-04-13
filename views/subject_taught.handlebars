@@ -11,8 +11,9 @@
 
                 <ul class="list-group">
                     {{#each teach_for_sub}}
+                   <a href="/teacher_taught/{{id}}"><li class="list-group-item">{{first_name}} {{last_name}}</li></a> 
+                    <input type="hidden" value="{{id}}" name="id">
 
-                    <li class="list-group-item">{{first_name}} {{last_name}}</li>
                     {{/each}}
                 </ul>
 

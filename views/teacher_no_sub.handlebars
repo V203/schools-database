@@ -1,3 +1,25 @@
 <div class="spacer"></div>
-<p class="h4">Teacher <b>{{the_teach_n}} {{the_teach_l}}</b> has not been assigned any subjects yet.</p>
+<p class="h4">Teacher <b>{{the_teach_n}} {{the_teach_l}} {{id}}</b> has not been assigned any subjects yet.</p>
+<input type="hidden" value="{{id}}" name="teacher_id">
 <div class="spacer"></div>
+
+
+
+<form action="/teacher_no_sub" method="post">
+    <select class="form-select" aria-label=".form-select-sm example" name="select_subject" id="">
+        <option value='0' selected>
+            <p>--Select Subject--</p>
+        </option>
+        {{#each subs}}
+        <option value="{{id}}">{{name}}</option>
+        {{/each}}
+    </select>
+
+    <p class="h4">Teacher <b>{{the_teach_n}} {{the_teach_l}} {{id}}</b> has not been assigned any subjects yet.</p>
+    <input type="hidden" value="{{id}}" name="teacher_id">
+
+
+    <input class="btn btn-primary" type="submit" value="Assign">
+
+
+</form>

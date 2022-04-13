@@ -9,10 +9,22 @@
 	<link rel="stylesheet" href="/bootstrap.min.css">
 	</body>
 	<link rel="stylesheet" href="/style.css">
-	<link rel="shortcut icon" type="image/png" href="Books-icon.png">
+	<link rel="shortcut icon" type="image/png" href="/Books-icon.png">
+
+	<script src="/jquery.min.js"></script>
+	{{!--
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> --}}
 </head>
 
+<div class="spacer">
+	<div class="alert alert-success" role="alert">
+		This is a success alert—check it out!
+	</div>
+
+</div>
+
 <body>
+	<hr>
 	<div class="container">
 		<div class="row">
 
@@ -20,35 +32,36 @@
 				<nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light">
 
 					{{!-- <div class=" navbar-collapse"> --}}
-{{!-- <ul class="navbar-nav "> --}}
-						<div class="gap">
+						{{!-- <ul class="navbar-nav "> --}}
+							<div class="gap">
 								<li class="nav-item">
 									<a class="nav-link" href="/">
 										<p class="h3">Home</p>
 									</a>
 								</li>
-						</div>
+							</div>
 
-						<div class="gap">
-							<li class="nav-item">
-								<a class="nav-link" href="/subject">
-									<p class="h3"> Subjects</p>
-								</a>
-							</li>
-						</div>
-
-
-						<div class="gap">
-							<li class="nav-item">
-								<a class="nav-link" href="/teacher">
-									<p class="h3">Teachers</p>
-								</a>
-							</li>
-						</div>
+							<div class="gap">
+								<li class="nav-item">
+									<a class="nav-link" href="/subject">
+										<p class="h3"> Subjects</p>
+									</a>
+								</li>
+							</div>
 
 
+							<div class="gap">
+								<li class="nav-item">
+									<a class="nav-link" href="/teacher">
+										<p class="h3">Teachers</p>
+									</a>
+								</li>
+							</div>
 
-{{!-- </ul> --}}
+
+
+							{{!--
+						</ul> --}}
 
 					</div>
 				</nav>
@@ -57,27 +70,7 @@
 
 		</div>
 	</div>
-	<div class="contaner">
-		<div class="row">
-			<div class="col-2"></div>
-			<div class="col-8">
-
-				<p class="h1">Schools Database Program</p>
-			</div>
-			<div class="col-2"></div>
-		</div>
-	</div>
-
-	<div class="container">
-		<div class="row">
-			<div class="col-4"></div>
-			<div class="col-4">
-
-			</div>
-			<div class="col-4"></div>
-
-		</div>
-	</div>
+	
 
 
 	<div class="container">
@@ -92,12 +85,22 @@
 	</div>
 	<div class="container">
 		<div class="row">
-			<div class="col-3"></div>
+			<div class="col-3">
+			</div>
 
 
 
 			<div class="col-6">
 
+				<div class="error  alert-danger" role="alert">
+					{{this.emsg}}
+
+				</div>
+				<div class="success alert-success" role="alert">
+					
+					{{this.smsg}}
+					
+				</div>
 
 
 
@@ -120,6 +123,23 @@
 			</div>
 		</div>
 	</div>
+	<div class="row">
+		<div class="col-4"></div>
+		<div class="col-4">
+			<div class="alert" role="alert">
+				<div class="errors">
+					{{error}}
+				</div>
 
+				<div class="message">
+				</div>
 
 </html>
+
+</div>
+</div>
+<div class="col-4"></div>
+</div>
+
+<script src="/front.js"></script>
+<script src="/jquery-3.6.0.js"></script>

@@ -1,6 +1,11 @@
 <div class="spacer"></div>
 
 <p class="h4">Subjects taught by <b>{{fname}} {{lname}}</b></p>
+<div class="row">
+    <div class="col-12">
+        <hr>
+    </div>
+</div>
 <div class="spacer"></div>
 <form action="/teacher_taught/{{name}}" method="get">
 
@@ -12,7 +17,7 @@
                 <div class="center">
                     <ul class="list-group">
                         {{#each sub_by_teach}}
-                        <a href="/teacher_taught/{{id}}">
+                        <a href="/subject_taught/{{name}}">
                             <li class="list-group-item"> {{name}} </li>
                         </a>
                         {{/each}}

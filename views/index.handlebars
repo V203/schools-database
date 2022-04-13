@@ -1,13 +1,18 @@
 <div class="spacer"></div>
 
 <p class="h4">The teachers with multiple subjects</p>
+    <div class="row">
+    <div class="col-12">
+        <hr>
+    </div>
+</div>
 <div class="spacer"></div>
 <div class="row">
 
     <div class="col-4">
         <form action="/" method="post">
-            <select name="select_subject" id="" required>
-                <option selected value="">
+            <select class="form-select" aria-label=".form-select-sm example" name="select_subject" id="">
+                <option value="" selected>
                     <p>--Select Subject--</p>
                 </option>
                 {{#each subs}}
@@ -15,22 +20,23 @@
                 {{/each}}
             </select>
             <div class="spacer"></div>
-            <select name="select_teacher" id="" required>
+            <select class="form-select" aria-label=".form-select-sm example" name="select_teacher" id="">
                 <option value="">
                     <p>--Select teacher--</p>
                 </option>
                 {{#each teachers}}
-                <option value="{{id}}">{{first_name}} {{last_name}} </option>
+                <option value="{{id}}"> <p class="h6">{{first_name}} {{last_name}}</p> </option>
                 {{/each}}
             </select>
             <div class="spacer"></div>
-            <input type="submit" value="Assign">
+            <input class="btn btn-primary" type="submit" value="Assign">
         </form>
     </div>
 
 
 
-    <div class="col-8">
+<div class="col-1"></div>
+    <div class="col-7">
         <table class="table table-light">
             <tr>
                 <th scope="col">First Name & Last Name </th>
@@ -51,7 +57,7 @@
 
                 </td>
 
-                <td>{{subject_count}}</td>
+                <td> <p><span class="badge label-info">{{subject_count}}</p></span> </td>
 
                 <td>
                     {{#each subs_by_name}}
@@ -74,6 +80,3 @@
 </div>
 
 
-
-
-{{!-- <div class="spacer"></div> --}}

@@ -1,43 +1,72 @@
 <body>
+    <form action="/subject" method="post">
 
-<p class="h4">Register A Subject To Our Database</p>
-<div class="spacer"></div>
-    <div class="row">
-        <div class="col-3"></div>
-        <div class="col-6">
-            <ul class="list-group">
-
-                {{#each the_sub}}
-
-
-                <li class="list-group-item"><a href="/subject_taught/{{name}}/">{{name}}</a></li>
-
-                {{/each}}
-
-
-
-            </ul>
-
+        <p class="h4">Register A Subject To Our Database</p>
+        <div class="row">
+            <div class="col-12">
+                <hr>
+            </div>
         </div>
-        <div class="col-3"></div>
-    </div>
+        <div class="spacer"></div>
+        <div class="row">
+            <div class="col-3"></div>
+            <div class="col-6">
+                <ul class="list-group">
 
-<div class="spacer"></div>
-<div class="row">
+                    {{#each the_sub}}
 
 
-    <div class="col-3"></div>
-    <div class="col-6">
+                    <li class="list-group-item"><a href="/subject_taught/{{name}}/">{{name}}</a></li>
 
-        <form action="/add_subject" method="post">
-            <input type="text" name="sub_name" placeholder="Register Subject" id="" required>
-            <input type="submit" value="submit" >
-        </form>
-    </span>
+                    {{/each}}
 
-    </div>
-    <div class="col-3"></div>
-</div>
-    <span>
 
+
+                </ul>
+
+            </div>
+            <div class="col-3"></div>
+        </div>
+
+        <div class="spacer"></div>
+        <div class="row">
+
+
+            <div class="col-3"></div>
+            <div class="col-6">
+
+                <div class="mb-3">
+
+                    <label for="subject" class="form-label">Register A Subject</label>
+                    <input type="text" name="sub_name" placeholder="Register Subject" class="form-control" id="subject"
+                        placeholder="Mathematics">
+                </div>
+                <input type="submit" value="Register Subject" type="submit" class="btn btn-primary">
+                </span>
+
+            </div>
+            <div class="col-3"></div>
+        </div>
+        <span>
+
+
+            <div class="row">
+                <div class="col-4">
+
+                </div>
+
+                <div class="col-4">
+                    {{#each msg}}
+                    {{this.msg}}
+                    {{/each}}
+
+                </div>
+
+                <div class="col-4">
+
+                </div>
+
+            </div>
+
+    </form>
 </body>

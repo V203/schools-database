@@ -45,3 +45,55 @@ p{
 .gap{
 	width: 33.3%;
 }
+
+.error{
+	/* margin-left: auto;
+	margin-right: auto;
+	background-color: rgba(255, 255, 255, 0.755);
+	border-style: solid ;
+	border-color: #ff1f0187;
+	border-radius: 7px 7px 7px 7px;
+	border-width: 5px;
+	color: red; */
+	/* visibility: hidden; */
+	text-align: center;
+	font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+	
+	
+}
+
+.success{
+	
+	text-align: center;
+	font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;	
+}
+
+.box{
+	background-color: aquamarine;
+	height: 40px;
+	width: 100px;
+	color: black;
+
+}
+
+.fade-out {
+	visibility: hidden;
+	opacity: 0;
+	transition: visibility 0s 2s, opacity 2s linear;
+  }
+
+  .fade-in {
+	visibility: visible;
+	opacity: 1;
+	transition: opacity 2s linear;
+  }
+.badge{
+	background-color:#5a1c66;
+  }
+
+ul, a,th,td{
+	  color: #5a1c66;
+  }
+  .h4{
+	color: whitesmoke;
+  }

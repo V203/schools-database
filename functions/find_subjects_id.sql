@@ -1,15 +1,16 @@
-create or replace function find_subjects_id()
+create or replace function find_subjects_id(sub_id int)
 
-    returns table (id int )
+    returns table (id int ,name text)
 
     as $$
     begin
 
     return query
     select 
-    "subject".id
+    subject.id,
+    subject.name
     
-    from subject;
+    from subject where subject.id = sub_id;
 
     end;
     $$
