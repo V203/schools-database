@@ -1,4 +1,4 @@
-create or replace function find_subjects(id int)
+create or replace function find_subjects()
 
     returns table (subject_id int , subject_name text)
 
@@ -9,7 +9,7 @@ create or replace function find_subjects(id int)
     select 
     "subject".id,
     "subject".name
-    from subject where subject.id = id;
+    from subject;
 
     end;
     $$

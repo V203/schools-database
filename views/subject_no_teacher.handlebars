@@ -1,0 +1,63 @@
+<div class="row">
+    <div class="col-12">
+        
+    </div>
+</div>
+<form action="/subject_no_teacher" method="post">
+
+    <input type="hidden" value="{{id}}" name="sub_id">
+    <div class="row">
+
+
+
+        <div class="col-12">
+            <p class="h4">The <b>{{name}}</b> has not been assigned to any teachers yet.
+            </p>
+
+        </div>
+<hr>
+
+
+
+    </div>
+    <div class="spacer"></div>
+    <div class="row">
+
+
+
+        <div class="col-12">
+
+            <p class="h6">Select a teacher to assign to the <b>{{name}}</b> subject.
+            </p>
+
+        </div>
+
+
+
+    </div>
+    <div class="spacer"></div>
+    <div class="row">
+        <div class="col-4"></div>
+        <div class="col-4">
+
+            <select class="form-select mb-3" aria-label=".form-select-sm example" name="select_teacher" id="">
+                <option value="">
+                    <p>--Select teacher--</p>
+                </option>
+                {{#each teachers}}
+                <option value="{{id}}">
+                    <p class="h6">{{first_name}} {{last_name}}</p>
+                </option>
+                {{/each}}
+            </select>
+
+            <input class="btn btn-primary" type="submit" value="Assign Teacher">
+
+        </div>
+        <div class="col-4"></div>
+    </div>
+
+
+
+
+</form>

@@ -3,10 +3,11 @@ const exphbs = require('express-handlebars');
 const flash = require('express-flash');
 const session = require('express-session');
 const pg = require('pg');
-const req = require('express/lib/request');
+
 const Pool = pg.Pool;
 const app = express();
-let dbe = pg.DatabaseError
+const er = Error;
+const Services = require('./services/services');
 
 const PORT = process.env.PORT || 3010;
 
@@ -17,11 +18,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 
-
-
-
-// console.log(doc);
-
 app.use(express.static('public'));
 app.engine('handlebars', exphbs.engine())
 app.set('view engine', 'handlebars');
@@ -30,6 +26,8 @@ app.use(session({
     resave: false,
     saveUninitialized: true
 }));
+
+
 
 app.use(flash());
 
@@ -40,54 +38,38 @@ const pool = new Pool({
     }
 });
 
-var emsg;
-var smsg;
+let emsg;
+let smsg;
 
 
-
-// var new_teachers = async () =>  (await pool.query("Select * from get_teachers()")).rows;
-
-app.get("/add_teacher", async (req, res) => res.render("add_teacher"));
+let services = Services(pool);
 
 app.post("/subject", async (req, res) => {
-    try {
-        
-        
-        if ((await pool.query(`select * from create_subject('${req.body.sub_name}')`))) {
-            const the_sub = (await pool.query("select * from find_subjects()")).rows;
-            console.log(smsg);
-            the_sub
-            req.flash('sub_added', `The ${req.body.sub_name} subject was successfully added to the database.`);
-            smsg = req.flash('sub_added');
-            res.render('subject', { the_sub, smsg })
+
+    let ourBool = await services.add_subject(req.body.sub_name);
+
+        if(ourBool.bool === true){
+            smsg = ourBool.msg
+            emsg =''
+
+        }else if(ourBool.bool === false){
+            smsg = ''
+            emsg = ourBool.msg
         }
-    } catch (error) {
-
-        if (error.detail) {
-
-            the_sub
-            req.flash('error', `The ${req.body.sub_name} subject already exists in the database.`);
-            emsg = req.flash('error');
-            res.render('subject', { emsg, the_sub })
-
-        }
-    }
-
+        
+        res.render('subject', { 
+            the_sub: await services.get_subjects(),
+            emsg ,
+            smsg
+        })
 
 
 });
 
 
-app.get('/subject', async (req, res) => {
-    const the_sub = (await pool.query("select * from find_subjects()")).rows;
-    // setTimeout(function () { return msg = req.flash('exist') }, 3000);
-    res.render("subject", { the_sub })
-});
+app.get('/subject', async (req, res) =>  res.render("subject", { the_sub:await services.get_subjects() }));
 
-app.get("/teacher", async (req, res) => {
-    let teachers = (await pool.query("Select * from get_teachers()")).rows;
-    res.render('teacher', { teachers });
-});
+app.get("/teacher", async (req, res) => res.render('teacher', { teachers: await services.get_teachers() }));
 
 // req.setFlash()
 
@@ -108,142 +90,39 @@ app.post("/teacher", async (req, res) => {
 });
 
 app.get("/", async (req, res) => {
-    // console.log( await new_teachers());
     
-    // console.log(qr);
-    const multi_subs = (await pool.query("select * from find_teachers_teaching_multiple_subjects()")).rows;
+    const multi_subs = await services.multi_sub_teachers()
 
     let temp = multi_subs.map(el => el.id)
     for (let i = 0; i < multi_subs.length; i++) {
         multi_subs[i]['subs_by_name'] = (await pool.query(`select * from sub_by_teach(${temp[i]})`)).rows;
     }
 
-    const subs = (await pool.query("select * from find_subjects()")).rows
-
-    const teachers = (await pool.query("select id, first_name, last_name from get_teachers()")).rows
+    const subs = await services.get_subjects();
+    const teachers = await services.get_teachers();
     res.render("index", { multi_subs, subs, teachers })
 })
 
-app.post("/", async (req, res) => {
-
-
-
-
-
-
-
-    let valid_insert = async (teacher_param,subject_param)=>{
-        console.log(teacher_param + " "+ subject_param);
-        if(teacher_param === "" || subject_param == ""){
-            console.log(teacher_param);
-            let subs = (await pool.query("select * from find_subjects()")).rows
-            let multi_subs = (await pool.query("select * from find_teachers_teaching_multiple_subjects()")).rows;
-            let teachers = (await pool.query("select id, first_name, last_name from get_teachers()")).rows
-            
-            // console.log(teacher);
-            // let teacher = (await pool.query(`select * from get_teacher_by_id(${teacher_param})`)).rows[0];
-            req.flash("not_added", `Please select teacher and subject to assign the teacher to.`);
-            let temp = multi_subs.map(el => el.id)
-            for (let i = 0; i < multi_subs.length; i++) {
-                multi_subs[i]['subs_by_name'] = (await pool.query(`select * from sub_by_teach(${temp[i]})`)).rows;
-            }
-            // req.flash("teacher_added", `Teacher`)
-            emsg = req.flash('not_added');
-
-            res.render('index', { emsg, multi_subs, subs, teachers });
-
-        }else {
+app.post("/link", async (req, res) => {
     
-    
-            try {
-                
-                await pool.query(`select * from link_teacher_to_subject('${teacher_param}','${subject_param}')`)
-            } catch (error) {
-                console.log(error);
-            }
-            let subs = (await pool.query("select * from find_subjects()")).rows
-            let multi_subs = (await pool.query("select * from find_teachers_teaching_multiple_subjects()")).rows;
-            let teachers = (await pool.query("select id, first_name, last_name from get_teachers()")).rows
-            let teacher = (await pool.query(`select first_name, last_name from get_teacher_by_id(${teacher_param})`)).rows['0'];
-    
-            let temp = multi_subs.map(el => el.id)
-            for (let i = 0; i < multi_subs.length; i++) {
-                multi_subs[i]['subs_by_name'] = (await pool.query(`select * from sub_by_teach(${temp[i]})`)).rows;
-            }
-            
-            let subID = (await pool.query(`select  * from find_subjects_id('${subject_param}')`)).rows[0]['name'] 
-            // console.log(subID);
-            req.flash("teacher_added", `Teacher ${teacher.first_name} ${teacher.last_name} successfully assingned to teach ${subID}.`);
-            smsg = req.flash('teacher_added');
-            res.render('index', { smsg, multi_subs, subs, teachers });
-
-
-
-
-
+   
+    let t =  await services.assign_teach_subject(req.body.select_teacher,req.body.select_subject)
+    if(t.bool === true){
+        smsg =t.msg
+        emsg = ''
+    }else if (t.bool === false){
+         emsg = t.msg
+         smsg = ''
     }
+   
     
-  
-    
-        
-    }
-
-    valid_insert(req.body.select_teacher,req.body.select_subject);
-    
-    
+    res.render('index',{
+        smsg,emsg,
+        teachers: await services.get_teachers(),
+        multi_subs:await services.multi_sub_teachers_v2(await services.multi_sub_teachers()),
+        subs:await services.get_subjects()});  
 });
-    // console.log(req.body);
-    // try {
-    //     console.log(req.body.select_subject + " "+ req.body.select_teacher);
-    //     if () {
-    //         let subs = (await pool.query("select * from find_subjects()")).rows
-    //         let multi_subs = (await pool.query("select * from find_teachers_teaching_multiple_subjects()")).rows;
-    //         let teachers = (await pool.query("select id, first_name, last_name from get_teachers()")).rows
-    //     let teacher = (await pool.query(`select first_name, last_name from get_teacher_by_id(${req.body.select_teacher})`)).rows['0'];
-
-    //     let temp = multi_subs.map(el => el.id)
-    //     for (let i = 0; i < multi_subs.length; i++) {
-    //         multi_subs[i]['subs_by_name'] = (await pool.query(`select * from sub_by_teach(${temp[i]})`)).rows;
-    //     }
-        
-    //     let subID = (await pool.query(`select  * from find_subjects_id('${req.body.select_subject}')`)).rows[0]['name'] 
-    //     // console.log(subID);
-    //     req.flash("teacher_added", `Teacher ${teacher.first_name} ${teacher.last_name} successfully assingned to teach ${subID}.`);
-    //     smsg = req.flash('teacher_added');
-    //     res.render('index', { smsg, multi_subs, subs, teachers })
     
-    // }else{
-
-    //     console.log(error.error);
-    //     try {
-            
-    //     } catch (error) {
-    //         if(error){
-    //             console.log(error.error);
-    //         }
-            // let subs = (await pool.query("select * from find_subjects()")).rows
-            // let multi_subs = (await pool.query("select * from find_teachers_teaching_multiple_subjects()")).rows;
-            // let teachers = (await pool.query("select id, first_name, last_name from get_teachers()")).rows
-            // let temp = multi_subs.map(el => el.id)
-            // for (let i = 0; i < multi_subs.length; i++) {
-            //     multi_subs[i]['subs_by_name'] = (await pool.query(`select * from sub_by_teach(${temp[i]})`)).rows;
-            // }
-            
-            
-            
-            // req.flash("select both","Please select a teacher and a subject from the drop down buttons.")
-            // esmg = req.flash('select both')
-            // res.render('index', { emsg, multi_subs, subs, teachers })
-            
-        // }
-            
-        
-        // }
-    // }
-    //   if (!await pool.query(`select * from link_teacher_to_subject('${req.body.select_teacher}','${req.body.select_subject}')`)){
-
-
-
     
 
 app.get("/link_teacher", async (req, res) => {
@@ -252,11 +131,26 @@ app.get("/link_teacher", async (req, res) => {
     res.render("link_teacher", { subs, teachers });
 });
 
+app.post('/subject_no_teacher', async (req,res)=>{
+    
+    await pool.query(`select * from link_teacher_to_subject(${req.body.select_teacher},${req.body.sub_id})`);
+
+    res.redirect('/');
+});
+
+
 app.get("/subject_taught/:name", async (req, res) => {
     let subject = req.params.name
-    console.log(subject);
     const teach_for_sub = (await pool.query(`select * from find_teachers_for_subject('${req.params.name}')`)).rows;
-    res.render("subject_taught", { teach_for_sub, subject });
+    console.log(teach_for_sub);
+    if(teach_for_sub.length === 0 ){
+        const teachers = (await pool.query("select id, first_name, last_name from get_teachers()")).rows
+        let temp_id = (await pool.query(`select * from id_of_sub('${req.params.name}')`)).rows[0]['id'];
+        let temp_name = (await pool.query(`select * from id_of_sub('${req.params.name}')`)).rows[0]['name'];
+        
+        res.render('subject_no_teacher',{id:temp_id,name:temp_name,teachers});
+    }else{
+    res.render("subject_taught", { teach_for_sub, subject })};
 });
 
 app.get("/teacher_taught/:id", async (req, res) => {
@@ -285,60 +179,11 @@ app.get("/teacher_taught/:id", async (req, res) => {
 
 app.post("/teacher_no_sub",async (req,res)=>{
     
-    await pool.query(`select * from link_teacher_to_subject(${req.body.teacher_id},${req.body.select_subject})`);
-    
-        
-        
+    await pool.query(`select * from link_teacher_to_subject(${req.body.teacher_id},${req.body.select_subject})`);        
         res.redirect('/')
-        
-
-
 })
 
 app.listen(PORT, function () {
     console.log(`App started on port ${PORT}`)
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// const subs = (await pool.query("select * from find_subjects()")).rows
-    // const multi_subs = (await pool.query("select * from find_teachers_teaching_multiple_subjects()")).rows;
-    // const teachers = (await pool.query("select id, first_name, last_name from get_teachers()")).rows
-    // if(error.detail){
-    //     let temp = multi_subs.map(el => el.id)
-    //     for (let i = 0; i < multi_subs.length; i++) {
-    //         multi_subs[i]['subs_by_name'] = (await pool.query(`select * from sub_by_teach(${temp[i]})`)).rows;
-    //         res.render('index', { smsg, multi_subs, subs, teachers })
-    //         req.flash("select both","Please select a teacher and a subject from the drop down buttons.")
-    //         esmg = req.flash('select both')
-    //         res.render("index",{emsg,subs,multi_subs});
-    //     }
-    
-    // }
-    //     console.log(error.detail);
-    // }
-    // const multi_subs = (await pool.query("select * from find_teachers_teaching_multiple_subjects()")).rows;
-    // let temp = multi_subs.map(el => el.id)
-    // for (let i = 0; i < multi_subs.length; i++) {
-    //     multi_subs[i]['subs_by_name'] = (await pool.query(`select * from sub_by_teach(${temp[i]})`)).rows;
-    // }
-    // // console.log(document);
-    // const subs = (await pool.query("select * from find_subjects()")).rows
-    // const teachers = (await pool.query("select id, first_name, last_name from get_teachers()")).rows
-    // res.redirect('/');
