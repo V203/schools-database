@@ -71,7 +71,7 @@ app.get('/subject', async (req, res) =>  res.render("subject", { the_sub:await s
 
 app.get("/teacher", async (req, res) => res.render('teacher', { teachers: await services.get_teachers() }));
 
-// req.setFlash()
+
 
 app.post("/teacher", async (req, res) => {
     if (((await pool.query(`select add_teacher('${req.body.fname}','${req.body.lname}','${req.body.email}')`)).rows[0]['add_teacher'])) {
