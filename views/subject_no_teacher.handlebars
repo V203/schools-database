@@ -6,36 +6,56 @@
 <form action="/subject_no_teacher" method="post">
 
     <input type="hidden" value="{{id}}" name="sub_id">
+    <div class="spacer"></div>
     <div class="row">
 
 
 
         <div class="col-12">
-            <p class="h4">The <b>{{name}}</b> has not been assigned to any teachers yet.
+
+            <p class="h4">Select a teacher to assign to the <b>{{name}}</b> subject.
             </p>
 
         </div>
 <hr>
-
-
-
-    </div>
-    <div class="spacer"></div>
     <div class="row">
 
 
 
         <div class="col-12">
-
-            <p class="h6">Select a teacher to assign to the <b>{{name}}</b> subject.
+            <p class="h6"><b>{{display}}</b>
             </p>
 
         </div>
 
 
 
+
+    </div>
+
+
     </div>
     <div class="spacer"></div>
+
+     <div class="container">
+        <div class="row">
+            <div class="col-4"></div>
+            <div class="col-4">
+
+                <ul class="list-group">
+                    {{#each list}}
+                   <a href="/teacher_taught/{{id}}"><li class="list-group-item">{{first_name}} {{last_name}}</li></a> 
+                    <input type="hidden" value="{{id}}" name="id">
+
+                    {{/each}}
+                </ul>
+
+
+            </div>
+            <div class="col-4"></div>
+        </div>
+        <div class="spacer"></div>
+    </div>
     <div class="row">
         <div class="col-4"></div>
         <div class="col-4">
@@ -56,8 +76,4 @@
         </div>
         <div class="col-4"></div>
     </div>
-
-
-
-
 </form>

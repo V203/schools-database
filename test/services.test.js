@@ -13,40 +13,72 @@ describe("Test of the schools database program", async () => {
   var c = 1;
   beforeEach(async function () {
     console.log(`***** Test No# ${c++} `);
-    await pool.query("TRUNCATE TABLE teacher RESTART IDENTITY CASCADE ");
-    await pool.query("TRUNCATE TABLE subject RESTART IDENTITY CASCADE ");
-    await pool.query("TRUNCATE TABLE teacher_subject RESTART IDENTITY CASCADE ");
+    await pool.query("TRUNCATE TABLE teacher RESTART IDENTITY CASCADE");
+    await pool.query("TRUNCATE TABLE subject RESTART IDENTITY CASCADE");
+    await pool.query("TRUNCATE TABLE teacher_subject RESTART IDENTITY CASCADE");
   });
+  it(`Should state if the teacher has a subject assigned to them or not.`, async ()=>{
+    let  services = Services(pool)
 
- 
+    await services.add_subject("Mathematics");
+    await services.add_subject("English");
+    await services.add_subject("Biology");
+    await services.add_subject("Physics");
+    await services.add_subject("Life-Orientation");
+    await services.add_subject("Afrikaans");
 
-  it("Should be able to get the teachers data by id",async ()=>{
+    await services.add_teacher("Vuyisa", "Ndubela", "vm@email.com");
+    await services.add_teacher("Loli", "Poppins", " popins@email.com");
+    await services.add_teacher("Keith", "Steve", "ks@email.com");
+    await services.add_teacher("Mat", "Jones", "mj@gmail.com");
+    await services.add_teacher("Brian", "Stones", "bstone@email.com");
+
+    await services.assign_teach_subject(2,1);
+    await services.assign_teach_subject(2,2);
+    await services.assign_teach_subject(2,3);
+    let expected =  {
+      display: 'If necessary, assign Loli Poppins additional subjects.',
+      subjects_for_teach: [
+        'Mathematics',
+        'English',
+        'Biology'
+      ]
+    }
+    let name_from_id = await services.get_sub_by_id(1)
+    let _para = await services.subject_status('Mathematics')
+    let par = await services.subs_for_teacher(1)
+    let actual = await services.teacher_status(2)
+
+
+    assert.deepEqual(actual, expected);
+  })
+
+
+
+  it("Should be able to get the teachers data by id", async () => {
     let services = Services(pool);
 
     await services.add_teacher("Loli", "Poppins", " popins@email.com");
     let actual = await services.get_teach_by_id(1);
-    
+
     let expected = { id: 1, first_name: 'Loli', last_name: 'Poppins' }
 
-    assert.deepEqual(actual,expected)
+    assert.deepEqual(actual, expected)
   })
 
   it("Should be able to add two teachers to the database and return the two teachers added to the database.", async () => {
     let services = Services(pool);
     await services.add_teacher("Vuyisa", "Ndubela", "vm@email.com");
     await services.add_teacher("Loli", "Poppins", " popins@email.com");
+
     let actual = await services.get_teachers();
 
     let expected = [
       { id: 1, first_name: 'Vuyisa', last_name: 'Ndubela' },
       { id: 2, first_name: 'Loli', last_name: 'Poppins' }
     ]
-    
-    
 
     assert.deepStrictEqual(expected, actual);
-
-
   })
 
   it("We should be able to add maths, english and biology to the database and return the three mentioned subjects", async () => {
@@ -66,7 +98,7 @@ describe("Test of the schools database program", async () => {
     assert.deepEqual(expected, actual)
   })
 
-  it("Assign teachers to subjects and return teachers with more 1 subject", async () => {
+  it("Assign teachers to subjects and return teachers with more than 1 subject", async () => {
     let services = Services(pool);
 
     await services.add_subject("Mathematics");
@@ -108,8 +140,47 @@ describe("Test of the schools database program", async () => {
       }
     ]
 
-    // console.log(actual);
+    
     assert.deepEqual(actual, expected)
+  });
+
+  it(`We should add the teachers to the database and return all the subjects that a particular teacher teaches`, async () => {
+    let services = Services(pool);
+    
+    await services.add_teacher("Loli", "Poppins", " popins@email.com");
+
+    await services.add_subject("Mathematics");
+    await services.add_subject("English");
+    await services.add_subject("Biology");
+    await services.add_subject("Physics");
+    
+    await services.assign_teach_subject(1, 1);
+    await services.assign_teach_subject(1, 2);
+    await services.assign_teach_subject(1, 4);
+    
+    let actual = await services.subs_for_teacher(1);
+    let expected = [
+      {
+        sub_id: 1,
+        subject_name: 'Mathematics',
+        teach_id: 1
+      },
+      {
+        sub_id: 1,
+        subject_name: 'English',
+        teach_id: 1
+      },
+      {
+        sub_id: 1,
+        subject_name: 'Physics',
+        teach_id: 1
+      }
+    ]
+    
+    
+
+    assert.deepEqual(actual, expected);
+
   });
 
 

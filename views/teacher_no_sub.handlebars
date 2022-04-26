@@ -1,15 +1,32 @@
 <div class="spacer"></div>
-<p class="h4">Teacher <b>{{the_teach_n}} {{the_teach_l}}</b> has not been assigned any subjects yet.</p>
+<p class="h4">{{display}}</p>
 <input type="hidden" value="{{id}}" name="teacher_id">
 <div class="spacer"></div>
 <hr>
 
 <div class="row">
     <div class="col-12">
-        <p class="h6">Select a subject to assign  <b>{{the_teach_n}} {{the_teach_l}}</b> to.
-            </p>
+        <p class="h6">Select a subject to assign <b>{{the_teach_n}} {{the_teach_l}}</b> to.
+        </p>
     </div>
 </div>
+<div class="spacer"></div>
+<div class="row">
+    <div class="col-4"></div>
+    <div class="col-4">
+        <div class="center">
+            <ul class="list-group">
+                {{#each list}}
+                <a href="/subject_taught/{{this}}">
+                    <li class="list-group-item"> {{this}} </li>
+                </a>
+                {{/each}}
+            </ul>
+        </div>
+    </div>
+    <div class="col-4"></div>
+</div>
+<div class="spacer"></div>
 <div class="row">
     <div class="col-4"></div>
     <div class="col-4">
@@ -35,3 +52,4 @@
     </div>
     <div class="col-4"></div>
 </div>
+

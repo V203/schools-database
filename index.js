@@ -47,28 +47,29 @@ let services = Services(pool);
 app.post("/subject", async (req, res) => {
 
     let ourBool = await services.add_subject(req.body.sub_name);
+    
+    if (ourBool.bool === true) {
+        smsg = ourBool.msg
+        emsg = ''
 
-        if(ourBool.bool === true){
-            smsg = ourBool.msg
-            emsg =''
+    } else if (ourBool.bool === false) {
+        smsg = ''
+        emsg = ourBool.msg
+    }
 
-        }else if(ourBool.bool === false){
-            smsg = ''
-            emsg = ourBool.msg
-        }
-        
-        res.render('subject', { 
-            the_sub: await services.get_subjects(),
-            emsg ,
-            smsg
-        })
+    res.render('subject', {
+        the_sub: await services.get_subjects(),
+        emsg,
+        smsg
+    })
 
 
 });
 
 
-app.get('/subject', async (req, res) =>  res.render("subject", { the_sub:await services.get_subjects() }));
+app.get('/subject', async (req, res) => res.render("subject", { the_sub: await services.get_subjects() }));
 
+app.get("/teacher/:id", async (req, res) => res.render('teacher', { teachers: await services.get_teachers() }));
 app.get("/teacher", async (req, res) => res.render('teacher', { teachers: await services.get_teachers() }));
 
 
@@ -90,7 +91,12 @@ app.post("/teacher", async (req, res) => {
 });
 
 app.get("/", async (req, res) => {
-    
+    // await services.backupData()
+
+
+
+
+
     const multi_subs = await services.multi_sub_teachers()
 
     let temp = multi_subs.map(el => el.id)
@@ -104,26 +110,27 @@ app.get("/", async (req, res) => {
 })
 
 app.post("/link", async (req, res) => {
-    
-   
-    let t =  await services.assign_teach_subject(req.body.select_teacher,req.body.select_subject)
-    if(t.bool === true){
-        smsg =t.msg
+
+
+    let t = await services.assign_teach_subject(req.body.select_teacher, req.body.select_subject)
+    if (t.bool === true) {
+        smsg = t.msg
         emsg = ''
-    }else if (t.bool === false){
-         emsg = t.msg
-         smsg = ''
+    } else if (t.bool === false) {
+        emsg = t.msg
+        smsg = ''
     }
-   
-    
-    res.render('index',{
-        smsg,emsg,
+
+
+    res.render('index', {
+        smsg, emsg,
         teachers: await services.get_teachers(),
-        multi_subs:await services.multi_sub_teachers_v2(await services.multi_sub_teachers()),
-        subs:await services.get_subjects()});  
+        multi_subs: await services.multi_sub_teachers_v2(await services.multi_sub_teachers()),
+        subs: await services.get_subjects()
+    });
 });
-    
-    
+
+
 
 app.get("/link_teacher", async (req, res) => {
     const subs = (await pool.query("select * from find_subjects()")).rows
@@ -131,26 +138,54 @@ app.get("/link_teacher", async (req, res) => {
     res.render("link_teacher", { subs, teachers });
 });
 
-app.post('/subject_no_teacher', async (req,res)=>{
-    
-    await pool.query(`select * from link_teacher_to_subject(${req.body.select_teacher},${req.body.sub_id})`);
+app.post('/subject_no_teacher', async (req, res) => {
+    let sub_name = await services.get_sub_by_id(req.body.sub_id)
 
-    res.redirect('/');
+    let ourBool = await services.assign_teach_subject(req.body.select_teacher, req.body.sub_id);
+
+    if (ourBool.bool === true) {
+        smsg = ourBool.msg
+        emsg = ''
+
+    } else if (ourBool.bool === false) {
+        smsg = ''
+        emsg = ourBool.msg
+    }
+
+    let state = await services.subject_status(sub_name.name)
+
+
+    res.render('subject_no_teacher', {
+        teachers: await services.get_teachers(),
+        display:state.display,
+        id: req.body.sub_id,
+        list:state.teachers,
+        emsg,
+        smsg
+    })
 });
 
 
 app.get("/subject_taught/:name", async (req, res) => {
+    
     let subject = req.params.name
     const teach_for_sub = (await pool.query(`select * from find_teachers_for_subject('${req.params.name}')`)).rows;
-    console.log(teach_for_sub);
-    if(teach_for_sub.length === 0 ){
+
+    if (teach_for_sub.length === 0) {
         const teachers = (await pool.query("select id, first_name, last_name from get_teachers()")).rows
         let temp_id = (await pool.query(`select * from id_of_sub('${req.params.name}')`)).rows[0]['id'];
         let temp_name = (await pool.query(`select * from id_of_sub('${req.params.name}')`)).rows[0]['name'];
-        
-        res.render('subject_no_teacher',{id:temp_id,name:temp_name,teachers});
-    }else{
-    res.render("subject_taught", { teach_for_sub, subject })};
+
+        res.render('subject_no_teacher', {
+            display: (await services.subject_status(temp_name)).display, 
+            subs_4_teach:(await services.get_teachers_for_sub(temp_name)).rows,
+            id: temp_id,
+            name: temp_name,
+            teachers
+        });
+    } else {
+        res.render("subject_taught", { teach_for_sub, subject })
+    };
 });
 
 app.get("/teacher_taught/:id", async (req, res) => {
@@ -159,11 +194,24 @@ app.get("/teacher_taught/:id", async (req, res) => {
     let sub_by_teach = (await pool.query(`select * from sub_by_teach(${req.params.id})`)).rows;
 
     if (sub_by_teach.length === 0) {
-        
-        let the_teach = (await pool.query(`select * from get_teacher_by_id(${req.params.id})`)).rows;
-        let the_teach_l = the_teach[0]['last_name']
-        let the_teach_n = the_teach[0]['first_name']
-        res.render("teacher_no_sub", {subs: (await pool.query("select * from find_subjects()")).rows, the_teach_l, the_teach_n ,id:req.params.id});
+
+        let the_teach = await services.get_teach_by_id(req.params.id);
+
+
+
+
+
+
+        res.render("teacher_no_sub", {
+            new_subs: await services.subs_for_teacher(req.params.id),
+            subs: await services.get_subjects(),
+            the_teach_n: the_teach['first_name'],
+            the_teach_l: the_teach['last_name'],
+            id: req.params.id,
+            display: (await services.teacher_status(req.params.id)).display,
+            list: (await services.teacher_status(req.params.id)).subjects_for_teach
+
+        });
     } else {
 
         try {
@@ -177,11 +225,44 @@ app.get("/teacher_taught/:id", async (req, res) => {
     }
 });
 
-app.post("/teacher_no_sub",async (req,res)=>{
+app.post("/teacher_no_sub", async (req, res) => {
     
-    await pool.query(`select * from link_teacher_to_subject(${req.body.teacher_id},${req.body.select_subject})`);        
-        res.redirect('/')
+    let t = await services.assign_teach_subject(req.body.teacher_id, req.body.select_subject)
+    if (t.bool === true) {
+        smsg = t.msg
+        emsg = ''
+    } else if (t.bool === false) {
+        emsg = t.msg
+        smsg = ''
+    }
+    let teach_display_msg = await services.subs_for_teacher(req.body.teacher_id);
+
+    let the_teach = await services.get_teach_by_id(req.body.teacher_id);
+
+    
+
+
+    let display = (await services.teacher_status(req.body.teacher_id)).display;
+    
+    res.render("teacher_no_sub", {
+        new_subs: await services.subs_for_teacher(req.body.teacher_id),
+        subs: await services.get_subjects(),
+        the_teach_n: the_teach['first_name'],
+        the_teach_l: the_teach['last_name'],
+        id: the_teach['id'],
+        smsg, emsg, display: (await services.teacher_status(req.body.teacher_id)).display,
+        list: (await services.teacher_status(req.body.teacher_id)).subjects_for_teach
+    })
+
 })
+
+
+app.post("/reset", async (req, res) => {
+    await services.backupData()
+    res.redirect("/")
+})
+
+
 
 app.listen(PORT, function () {
     console.log(`App started on port ${PORT}`)
