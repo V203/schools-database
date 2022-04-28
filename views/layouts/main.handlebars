@@ -16,61 +16,61 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> --}}
 </head>
 
-<div class="spacer">
-	<div class="alert alert-success" role="alert">
-		This is a success alert—check it out!
+<body>
+
+	<hr>
+	<div class="spacer">
+		<div class="alert alert-success" role="alert">
+			This is a success alert—check it out!
+		</div>
+
 	</div>
 
-</div>
+	<div class="row">
 
-<body>
-	<hr>
-	<div class="container">
-		<div class="row">
+		<div class="col-12">
+			<nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light">
 
-			<div class="col-12">
-				<nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light">
+				{{!-- <div class=" navbar-collapse"> --}}
+					{{!-- <ul class="navbar-nav "> --}}
+						<div class="gap">
+							<li class="nav-item">
+								<a class="nav-link" href="/">
+									<p class="h3">Home</p>
+								</a>
+							</li>
+						</div>
 
-					{{!-- <div class=" navbar-collapse"> --}}
-						{{!-- <ul class="navbar-nav "> --}}
-							<div class="gap">
-								<li class="nav-item">
-									<a class="nav-link" href="/">
-										<p class="h3">Home</p>
-									</a>
-								</li>
-							</div>
-
-							<div class="gap">
-								<li class="nav-item">
-									<a class="nav-link" href="/subject">
-										<p class="h3"> Subjects</p>
-									</a>
-								</li>
-							</div>
+						<div class="gap">
+							<li class="nav-item">
+								<a class="nav-link" href="/subject">
+									<p class="h3"> Subjects</p>
+								</a>
+							</li>
+						</div>
 
 
-							<div class="gap">
-								<li class="nav-item">
-									<a class="nav-link" href="/teacher">
-										<p class="h3">Teachers</p>
-									</a>
-								</li>
-							</div>
+						<div class="gap">
+							<li class="nav-item">
+								<a class="nav-link" href="/teacher">
+									<p class="h3">Teachers</p>
+								</a>
+							</li>
+						</div>
 
 
 
-							{{!--
-						</ul> --}}
+						{{!--
+					</ul> --}}
 
-					</div>
-				</nav>
-
-			</div>
+				</div>
+			</nav>
 
 		</div>
+
 	</div>
-	
+
+
 
 
 	<div class="container">
@@ -83,6 +83,7 @@
 
 		</div>
 	</div>
+	<div class="spacer"></div>
 	<div class="container">
 		<div class="row">
 			<div class="col-3">
@@ -97,9 +98,9 @@
 
 				</div>
 				<div class="success alert-success" role="alert">
-					
+
 					{{this.smsg}}
-					
+
 				</div>
 
 
@@ -114,13 +115,13 @@
 
 			<div class="col-3"></div>
 
-			<div class="container">
+
 
 				{{{body}}}
 
 
 
-			</div>
+		
 		</div>
 	</div>
 	<div class="row">

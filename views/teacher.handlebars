@@ -1,6 +1,5 @@
-<body>
 
-    <p class="h3">The current teachers in our database</p>
+   <b> <p class="h3">The current teachers in our database</p></b>
     <div class="row">
         <div class="col-12"><hr></div>
         </div>
@@ -8,9 +7,11 @@
     <form class="form-floating" action="/teacher" method="post">
 
         <div class="row">
-            <div class="col-4">
-                <hr>
-                <p class="h6"> Register a teacher to the school.</p>
+            <div class="col-2"></div>
+            <div class="col-3">
+                
+                <b><p class="h6"> Register a teacher to the school.</p></b>
+                <div class="spacer5px"></div>
                 <div class="mb-1">
                     <label for="fname" class="form-label">First Name</label>
                     <input class="form-control" name="fname" type="text" id="fname" placeholder="First Name"
@@ -32,20 +33,22 @@
                 <input type="submit" class="btn btn-primary" value="submit">
 
             </div>
-            <div class="col-1"> </div>
-            <div class="col-7">
-                <hr>
-                <p class="h6">The teachers we have in our school.</p>
+
+<div class="col-2"></div>
+            
+            <div class="col-3">
+                <b><p class="h6">The teachers we have in our school.</p></b>
+                <div class="spacer5px"></div>
                 <table class="table table-light">
                     <tr>
-                        <th>First Name</th>
-                        <th>Last Name</th>
+                        <th>Full Name</th>
+                        
                     </tr>
                     {{#each teachers}}
                     <tr>
                         <td><a href="/teacher_taught/{{id}}">
-                               {{first_name}} </a></td>
-                        <td><a href="/teacher_taught/{{id}}"> {{last_name}} </a></td>
+                               {{first_name}} {{last_name}}</a></td>
+                 
 
 
                     </tr>
@@ -56,7 +59,7 @@
 
             </div>
 
-
+<div class="col-2"> </div>
         </div>
 
         <div class="spacer"></div>
@@ -72,4 +75,3 @@
 
 
 
-</body>
