@@ -51,6 +51,9 @@ module.exports = Services = (pool) => {
     let multi_sub_teachers_v2 = async (par) => {
         par = (await pool.query(`select * from find_teachers_teaching_multiple_subjects()`)).rows
         let temp = par.map(el => el.id);
+
+
+
         for (let i = 0; i < par.length; i++) {
             par[i]['subs_by_name'] = (await pool.query(`select * from sub_by_teach(${temp[i]})`)).rows;
         }
